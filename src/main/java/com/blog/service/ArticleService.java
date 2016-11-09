@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ArticleService {
-    public Page<Article> getLatestArticle(Pageable pageable);
-
+    Page<Article> getLatestArticles(Pageable pageable);
+    Page<Article> getSpecialArticles(Long category_id,Pageable pageable);
+    Page<Article> getHottestArticles(Pageable pageable);
+    Page<Article> getPersonalArticles(String s,Pageable pageable);
 
 
 }

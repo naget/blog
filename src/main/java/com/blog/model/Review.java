@@ -5,8 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.security.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by t on 2016/10/31.
@@ -25,6 +23,6 @@ public class Review implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.REFRESH)
     @JoinColumn(name = "review_id")
     Review review;
-    @OneToMany(mappedBy = "review",fetch = FetchType.EAGER)
-    List<Review> reviewList=new ArrayList<Review>();
+//    @OneToMany(mappedBy = "review",fetch = FetchType.EAGER)
+//    List<Review> reviewList=new ArrayList<Review>();
 }

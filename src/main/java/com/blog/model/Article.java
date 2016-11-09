@@ -5,8 +5,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by t on 2016/10/31.
@@ -28,6 +26,8 @@ public class Article{
     Integer reviewNumber;
     Integer topNumber;
     Integer bottomNumber;
+    @Column(name = "hot_index")
+    Integer hotIndex;
 
 
 
@@ -39,7 +39,7 @@ public class Article{
     @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "category_id")
     Category category;
-    @OneToMany(mappedBy = "article")
-    List<Review> reviewList=new ArrayList<Review>();
+//    @OneToMany(mappedBy = "article")
+//    List<Review> reviewList=new ArrayList<Review>();
 
 }

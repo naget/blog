@@ -5,8 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by t on 2016/10/31.
@@ -29,7 +27,7 @@ public class User implements Serializable{
     BigInteger record_id;
     int sex;
     String phone;
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
-
-    private List<Article> articleList=new ArrayList<Article>();
+//    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+//
+//    private List<Article> articleList=new ArrayList<Article>();
 }
