@@ -19,6 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(customUserService());
     }
+
     protected void configure(HttpSecurity http) throws Exception{
           http.authorizeRequests()
                   .antMatchers("/getPageChangePArticle","/firstShow","/**/*.html","/**/*.js","/**/*.css","/**/*.jpg","/**/*.jpeg","/**/*.png","/*.jpg","/index","/getHottestArticles","/getHottestUsers","/article/**","/getArticleDetail","/getAuthorDetail","/getAuthor/**","/COA","/COB","/COE","/COF","/getSpecialArticles").permitAll()
