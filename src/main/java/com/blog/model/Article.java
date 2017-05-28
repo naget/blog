@@ -18,17 +18,37 @@ public class Article{
     @Id
     @GeneratedValue(strategy =GenerationType.AUTO)
     Long id;
+
+    public Article(Long contentId, String title, String content, Timestamp pubtime, int readNumber, int reviewNumber, int topNumber, int bottomNumber, int hotIndex, User user, Category category) {
+        this.contentId = contentId;
+        this.title = title;
+        this.content = content;
+        this.pubtime = pubtime;
+        this.readNumber = readNumber;
+        this.reviewNumber = reviewNumber;
+        this.topNumber = topNumber;
+        this.bottomNumber = bottomNumber;
+        this.hotIndex = hotIndex;
+        this.user = user;
+        this.category = category;
+    }
+    public Article(){}
+
+    Long contentId;
     String title;
     String content;
     Timestamp pubtime;
 
-    Integer readNumber;
-    Integer reviewNumber;
-    Integer topNumber;
-    Integer bottomNumber;
+    int readNumber;
+    int reviewNumber;
+    int topNumber;
+    int bottomNumber;
     @Column(name = "hot_index")
-    Integer hotIndex;
-
+    int hotIndex;
+//    @Column(name = "user_id")
+//    String userId;
+    @Transient //不映射数据库
+    String author;
 
 
     @JsonIgnore
@@ -36,7 +56,7 @@ public class Article{
     @JoinColumn(name="user_id")//外键，自动生成
     User user;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     @JoinColumn(name = "category_id")
     Category category;
 //    @OneToMany(mappedBy = "article")

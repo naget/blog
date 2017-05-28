@@ -1,0 +1,92 @@
+body{
+    font-family: "微软雅黑";}
+.clearfloat::after{
+    content: '';
+    display: block;
+    clear: both;
+    height:0;
+    visibility: hidden;
+}
+/*header样式*/
+header .header-logo{
+    background-color:rgba(55,57,78,0.8);
+    height: 40px;
+}
+header .header-logo img{
+    margin:0 0 0 10%;
+    width: 40px;
+    height: 40px;
+}
+header .header-logo h2{
+    display: inline-block;
+    vertical-align: top;
+    margin: 7px 0;
+    color: white;
+}
+header .header-group{
+    height: 220px;
+    width:100%;
+    background:url(../img/bg.jpg) top center;/*linear-gradient(to bottom,rgba(55,57,78,1),rgba(55,57,78,0.5));*/
+    -webkit-background-size:cover;
+    background-size:cover;
+}
+header .header-group #group_name{
+    margin:auto 0;
+    line-height:130px;
+    height: 130px;
+    color: white;
+}
+header .header-logo span{
+    float: right;
+    margin:10px 10% 0 0;
+    padding: 0.3em 0.6em;
+    background: orangered;
+    border-radius: 5px;
+}
+header .header-logo span a{
+    color:white;
+    text-decoration: none;
+}
+header .header-group span button{
+    border: none;
+    background: none;
+    color: orangered;
+}
+section#container{
+    margin: -70px 10% 2% 10%;
+    padding:10px 5px;
+    width: 80%;
+    background-color:white;
+    border: 1px solid #dedede;
+    border-radius: 8px;
+}
+#info{
+    margin:10px 0;
+}
+#info>label{
+    padding-left:1%;
+}
+label#except{
+    padding-left:0;
+}
+#info>input,#info>select{
+    padding: 5px 3px;
+    border:1px solid #CCCCCC;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    outline: none;
+}
+#submit{
+    display: block;
+    float: right;
+    margin: 10px;
+    padding: 5px 10px;
+    border:none;
+    background-color: #1d4293;
+    color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    outline: none;
+}
