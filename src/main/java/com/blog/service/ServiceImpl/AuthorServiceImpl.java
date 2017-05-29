@@ -141,7 +141,7 @@ public class AuthorServiceImpl {
         }
 
         Article article = new Article(null,title,keys,new Timestamp(System.currentTimeMillis()),0,0,0,0,0,user,category);
-        Long maxId=contentRepository.findMaxId()==null?-1:contentRepository.findMaxId().get(0).getId();
+        Long maxId=contentRepository.findMaxId().get(0)==null?-1:contentRepository.findMaxId().get(0).getId();
         contentRepository.save(new ArticleContent(content));
         compareAndSet(maxId,article,content);
         return "发表成功";

@@ -1,0 +1,269 @@
+<!DOCTYPE html >
+<html lang="en" ng-app="ArticleDetailApp" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8"/>
+    <title>博客文章-翼灵物联工作室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="short icon" type="image/x-icon" href="../img/logo.png"/>
+    <link href="../css/public.css" rel="stylesheet"/>
+    <link href="../css/blog-article.css" rel="stylesheet"/>
+
+    <script type="text/javascript" charset="utf-8" src="../js/jquery-1.11.0.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.5.5/angular.js"></script>
+    <!--解析AngularJs返回的html数据-->
+    <script src="https://cdn.bootcss.com/angular-sanitize/1.6.4/angular-sanitize.js"></script>
+    <link type="text/css" href="../css/bootstrap.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="../js/bootstrap.min.js"></script>
+
+    <link type="text/css" href="../css/bootstrap-pagination.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="../js/bootstrap-pagination.min.js"></script>
+    <script>
+        var app = angular.module("ArticleDetailApp", ['ngSanitize']);
+        app.filter('trustHtml', function ($sce) {
+            return function (input) {
+                return $sce.trustAsHtml(input);
+            }
+        });
+
+        app.controller('articleCtrl', function ($scope, $http) {
+            $scope.fetchThisArticle = function () {
+                $scope.nowUrl=document.URL;
+                $http({
+                    method: 'get',
+                    url: '/getArticleDetail'
+                }).success(function (articleDetail) {
+                    $scope.thisArticle = articleDetail.messageOne;
+                    $scope.thisReviews = articleDetail.messageTwo.content;
+                    $scope.author = articleDetail.messageThree;
+                    $scope.latestArticles = articleDetail.messageThree.latestArticles.content;
+//                    alert()
+                    $scope.thisReviewPage(articleDetail.messageTwo);
+                })
+            };
+            $scope.thisReviewPage = function (all) {
+                var demo1 = BootstrapPagination($("#demo1"), {
+                    layoutScheme: "lefttext,pagesizelist,firstpage,prevgrouppage,prevpage,pagenumber,nextpage,nextgrouppage,lastpage,pageinput,righttext",
+                    //记录总数。
+                    total: all.totalElements,
+                    //分页尺寸。指示每页最多显示的记录数量。
+                    pageSize: all.size,
+                    //当前页索引编号。从其开始（从0开始）的整数。
+                    pageIndex: all.number,
+                    //指示分页导航栏中最多显示的页索引数量。
+                    pageGroupSize: 5,
+                    //位于导航条左侧的输出信息格式化字符串
+                    leftFormateString: "本页{count}条记录/共{total}条记录",
+                    //位于导航条右侧的输出信息格式化字符串
+                    rightFormateString: "第{pageNumber}页/共{totalPages}页",
+                    //页码文本格式化字符串。
+                    pageNumberFormateString: "{pageNumber}",
+                    //分页尺寸输出格式化字符串
+                    pageSizeListFormateString: "每页显示{pageSize}条记录",
+                    //上一页导航按钮文本。
+                    prevPageText: "上一页",
+                    //下一页导航按钮文本。
+                    nextPageText: "下一页",
+                    //上一组分页导航按钮文本。
+                    prevGroupPageText: "上一组",
+                    //下一组分页导航按钮文本。
+                    nextGroupPageText: "下一组",
+                    //首页导航按钮文本。
+                    firstPageText: "首页",
+                    //尾页导航按钮文本。
+                    lastPageText: "尾页",
+                    //设置页码输入框中显示的提示文本。
+                    pageInputPlaceholder: "GO",
+                    //接受用户输入内容的延迟时间。单位：毫秒
+                    pageInputTimeout: 800,
+                    //分页尺寸列表。
+                    pageSizeList: [5, 10, 20, 50, 100, 200],
+                    //当分页更改后引发此事件。
+                    pageChanged: function (pageIndex, pageSize) {
+                        var articleId = $scope.thisArticle.id;
+                        $http({
+                            method: 'get',
+                            url: '/reviewPageChange',
+                            params: {
+                                articleId: articleId,
+                                size: pageSize,
+                                page: pageIndex
+                            }
+                        }).success(function (reviews) {
+                            $scope.thisReviews = reviews.content;
+                            $scope.thisReviewPage(thisReviews);
+                        })
+                    }
+                });
+            };
+            $scope.fetchHottestArticleList = function () {
+                $http({
+                    method: 'get',
+                    url: '/getHottestArticles'
+                }).success(function (articles) {
+                    $scope.hottestArticles = articles.content;
+                })
+            };
+            $scope.fetchThisArticle();
+            $scope.fetchHottestArticleList();
+            $scope.likeIt = function () {
+                var articleId = $scope.thisArticle.id;
+                $http({
+                    method: 'get',
+                    url: '/author/likeArticle',
+                    params: {articleId: articleId}
+                }).success(function (message) {
+                        if (message.code == 1) {
+                            alert(message.messageOne);
+                        }
+                        else if (message.code == 0) {
+                            alert(message.messageOne);
+                        }else {
+                            alert("点赞失败，您登录了吗？")
+                        }
+                    }
+                );
+
+
+            };
+            $scope.reviewArticle = function () {
+                var reviewContent = document.getElementById("review").value;
+                var articleId = $scope.thisArticle.id;
+
+                if (reviewContent == "" || reviewContent == " ") alert("请输入评论内容");
+                else {
+                    $http({
+                        method: 'get',
+                        url: '/author/reviewArticle',
+                        params: {articleId: articleId, content: reviewContent}
+                    }).success(function (message) {
+                        if (message == "1") {
+                            $scope.fetchThisArticle();
+                            document.getElementById("review").value = "";
+                        } else {
+                            alert("评论失败，您登录了吗？")
+                        }
+
+                    })
+                }
+            }
+        })
+    </script>
+</head>
+<body ng-controller="articleCtrl">
+<div id="wrapper">
+    <header id="header">
+
+        <div>
+            <p><a href="/index">返回首页</a></p>
+            <p sec:authorize="isAuthenticated()"><span id="span1" sec:authentication="name"></span></p>
+            <p sec:authorize="isAnonymous()"><a href="/login">登录</a></p>
+        </div>
+    </header>
+    <main id="main">
+        <article id="article">
+            <h1>{{thisArticle.title}}</h1>
+            <p><span>{{author.name}}</span><span>{{thisArticle.pubtime|date:'fullDate'}}</span><span>{{thisArticle.readNumber}}阅读</span>
+            </p>
+            <section id="article-content" ng-bind-html="thisArticle.content|trustHtml">
+                <!--{{thisArticle.content}}-->
+            </section>
+            <section id="article-copyright">
+                原创文章，如若转载，请注明出处:{{nowUrl}}
+            </section>
+            <section id="article-nav">
+                <ul>
+                    <li>热门标签</li>
+                    <li><a href="/COE" target="_blank">嵌入式</a></li>
+                    <li><a href="/COA" target="_blank">安卓</a></li>
+                    <li><a href="/COB" target="_blank">web后端</a></li>
+                    <li><a href="/COF" target="_blank">web前端</a></li>
+                </ul>
+            </section>
+            <section id="article-comment">
+                <form>
+                    <button ng-click="likeIt()"><img src="../img/good.png" alt="赞"/></button>
+                    <p>参与讨论</p>
+                    <textarea id="review" placeholder="请登录后参与评论..."></textarea>
+                    <div>
+                        <div><img src="../img/logo.png"/><a href="#">登录</a>后参与讨论</div>
+                        <button ng-click="reviewArticle()">提交评论</button>
+                    </div>
+                </form>
+                <p>评论列表</p>
+                <ul>
+                    <li ng-repeat="thisReview in thisReviews">
+                        <p>{{thisReview.reviewerName}}</p>
+                        <div>
+                            <p>{{thisReview.content}}</p>
+                            <p>{{thisReview.time}}
+                            </p>
+                        </div>
+                    </li>
+
+                </ul>
+                <!--<nav class="text-center">-->
+                <!--<ul id="demo1" class="pagination">-->
+
+                <!--</ul>-->
+                <!--</nav>-->
+            </section>
+            <nav class="text-center">
+                <ul id="demo1" class="pagination">
+
+                </ul>
+            </nav>
+        </article>
+        <section id="article-author">
+            <figure>
+                <img ng-src="{{author.head}}" alt="作者头像"/>
+            </figure>
+            <div>
+                <p>{{author.name}} <span>{{author.grade}}{{author.group}}</span></p>
+                <p>邮箱：{{author.email}}</p>
+                <p>共发表{{author.articleNumber}}篇</p>
+                <hr/>
+                <p>最近文章</p>
+                <section ng-repeat="latestArticle in latestArticles">
+                    <h2><a href="/article/{{latestArticle.id}}" target="_blank">{{latestArticle.title}}</a></h2>
+                </section>
+            </div>
+            <section id="blog-top">
+                <h3>博客 TOP10</h3>
+                <figure>
+                    <img src="../img/index-blog-top.jpg" alt="top1"/>
+                </figure>
+                <ul ng-repeat="hottestArticle in hottestArticles">
+                    <li><a href="/article/{{hottestArticle.id}}" id="top1" target="_blank"><span>{{$index+1}}</span>{{hottestArticle.title}}</a>
+                    </li>
+
+                </ul>
+            </section>
+            <section id="blog-link">
+                <h3>友情链接</h3>
+                <ul>
+                    <li><a href="/index" target="_blank">翼灵博客</a></li>
+                    <li><a href="http://www.swpuiot.com" target="_blank">翼灵官网</a></li>
+                    <li><a href="http://www.csdn.net/" target="_blank">CSDN</a></li>
+                    <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    <li><a href="https://www.aliyun.com/" target="_blank">阿里云</a></li>
+                    <li><a href="http://www.oschina.net/" target="_blank">开源中国</a></li>
+                    <li><a href="http://36kr.com/" target="_blank">36氪</a></li>
+                </ul>
+            </section>
+        </section>
+    </main>
+    <!-- S #footer -->
+    <footer id="footer">
+        <address>
+            <p><img src="../img/icon-phone.png"/>18280435703</p>
+            <p><img src="../img/icon-map.png"/>西南石油大学（新都）·明理楼C1011</p>
+            <p>&copy; 2017 翼灵物联工作室</p>
+        </address>
+        <div id="footer-bottom"></div>
+    </footer>
+    <!-- E #footer -->
+</div>
+
+</body>
+</html>
