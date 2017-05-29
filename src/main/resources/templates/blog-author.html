@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>博客作者-翼灵物联工作室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="short icon" type="image/x-icon" href="../img/logo.png"/>
+    <link href="../css/public.css" rel="stylesheet"/>
+    <link href="../css/blog-author.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="../js/jquery-1.11.0.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.5.5/angular.js"></script>
+    <link type="text/css" href="../css/bootstrap.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="../js/bootstrap.min.js"></script>
+    <!--<script src="//cdn.bootcss.com/angular-ui-router/1.0.0-rc.1/angular-ui-router.js"></script>-->
+    <link type="text/css" href="../css/bootstrap-pagination.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="../js/bootstrap-pagination.min.js"></script>
+
+</head>
+<body ng-controller="authorCtrl">
+<div id="wrapper">
+    <header id="header">
+        <div>
+        <p><a href="/index">返回首页</a></p>
+    </div>
+    </header>
+    <main id="main">
+        <section id="article-list">
+            <ul>
+                <li>热门标签</li>
+                <li><a href="/COE" target="_blank">嵌入式</a></li>
+                <li><a href="/COA" target="_blank">安卓</a></li>
+                <li><a href="/COB" target="_blank">web后端</a></li>
+                <li><a href="/COF" target="_blank">web前端</a></li>
+            </ul>
+            <section class="article-item" ng-repeat="authorLatestArticle in authorLatestArticles">
+                <!--<figure>这里加图片以后完成-->
+                    <!--<a href="#" target="_blank"><img src="../img/blog-article-item.jpg" alt="blog-pic"/></a>-->
+                <!--</figure>-->
+                <section>
+                    <h2><a href="/article/{{authorLatestArticle.id}}" target="_blank">{{authorLatestArticle.title}}</a></h2>
+                    <div><span>{{authorLatestArticle.author}}</span><span>{{authorLatestArticle.pubtime|date:'fullDate'}}</span><span>{{authorLatestArticle.readNumber}}阅读</span></div>
+                    <p>
+                        {{authorLatestArticle.content}}
+                    </p>
+                </section>
+            </section>
+
+                <nav class="text-center">
+                    <ul id="demo1" class="pagination">
+
+                    </ul>
+                </nav>
+
+
+        </section>
+
+
+        <section id="article-author">
+            <figure>
+                <img ng-src="{{author.head}}" alt="作者头像"/>
+            </figure>
+            <div>
+                <p>{{author.name}}<span>{{author.grade}}级 </span></p>
+                <p>{{author.group}}</p>
+                <p>邮箱：{{author.email}}</p>
+                <p>共发表{{author.articleNumber}}篇</p>
+                <hr/>
+                <!--<p>最近文章</p>-->
+                <!--<section ng-repeat="authorLatestArticle in authorLatestArticles">-->
+                    <!--<h2><a href="#" target="_blank">{{authorLatestArticle.title}}</a></h2>-->
+
+                <!--</section>-->
+            </div>
+            <section id="blog-top">
+                <h3>博客 TOP10</h3>
+                <figure>
+                    <img src="../img/index-blog-top.jpg" alt="top1"/>
+                </figure>
+                <ul ng-repeat="hottestArticle in hottestArticles">
+                    <li><a href="/article/{{hottestArticle.id}}" id="top1"><span>{{$index+1}}</span>{{hottestArticle.title}}</a></li>
+
+                </ul>
+            </section>
+
+            <section id="blog-link">
+                <h3>友情链接</h3>
+                <ul>
+                    <li><a href="/index" target="_blank">翼灵博客</a></li>
+                    <li><a href="http://www.swpuiot.com/" target="_blank">翼灵官网</a></li>
+                    <li><a href="http://www.csdn.net/" target="_blank">CSDN</a></li>
+                    <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    <li><a href="https://www.aliyun.com/" target="_blank">阿里云</a></li>
+                    <li><a href="http://www.oschina.net/" target="_blank">开源中国</a></li>
+                    <li><a href="http://36kr.com/" target="_blank">36氪</a></li>
+                </ul>
+            </section>
+        </section>
+    </main>
+    <!-- S #footer -->
+    <footer id="footer">
+        <address>
+            <p><img src="../img/icon-phone.png"/>18280435703</p>
+            <p><img src="../img/icon-map.png"/>西南石油大学（新都）·明理楼C1011</p>
+            <p>&copy; 2017 翼灵物联工作室</p>
+        </address>
+        <div id="footer-bottom"></div>
+    </footer>
+    <!-- E #footer -->
+</div>
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var app = angular.module('authorApp', []);
+    var authorId = [[${id}]];
+    console.log("作者id" + authorId);
+    app.controller('authorCtrl', ['$scope', '$http', function ($scope, $http) {
+        $scope.getAuthorDetail = function () {
+            $http({
+                method: 'get',
+                url: '/getAuthorDetail',
+                params: {authorId: authorId}
+            }).success(function (author) {
+                $scope.author = author;
+                $scope.authorLatestArticles = author.latestArticles.content;
+                $scope.articlePage(author.latestArticles)
+            });
+        };
+        $scope.getAuthorDetail();
+        $scope.fetchHottestArticleList=function () {
+            $http({
+                method: 'get',
+                url: '/getHottestArticles'
+            }).success(function (articles) {
+                $scope.hottestArticles = articles.content;
+            })
+        };
+        $scope.fetchHottestArticleList();
+        $scope.articlePage = function (all) {
+            var demo2 = BootstrapPagination($("#demo1"), {
+                layoutScheme: "lefttext,pagesizelist,firstpage,prevgrouppage,prevpage,pagenumber,nextpage,nextgrouppage,lastpage,pageinput,righttext",
+                //记录总数。
+                total: all.totalElements,
+                //分页尺寸。指示每页最多显示的记录数量。
+                pageSize: all.size,
+                //当前页索引编号。从其开始（从0开始）的整数。
+                pageIndex: all.number,
+                //指示分页导航栏中最多显示的页索引数量。
+                pageGroupSize: 5,
+                //位于导航条左侧的输出信息格式化字符串
+                leftFormateString: "本页{count}条记录/共{total}条记录",
+                //位于导航条右侧的输出信息格式化字符串
+                rightFormateString: "第{pageNumber}页/共{totalPages}页",
+                //页码文本格式化字符串。
+                pageNumberFormateString: "{pageNumber}",
+                //分页尺寸输出格式化字符串
+                pageSizeListFormateString: "每页显示{pageSize}条记录",
+                //上一页导航按钮文本。
+                prevPageText: "上一页",
+                //下一页导航按钮文本。
+                nextPageText: "下一页",
+                //上一组分页导航按钮文本。
+                prevGroupPageText: "上一组",
+                //下一组分页导航按钮文本。
+                nextGroupPageText: "下一组",
+                //首页导航按钮文本。
+                firstPageText: "首页",
+                //尾页导航按钮文本。
+                lastPageText: "尾页",
+                //设置页码输入框中显示的提示文本。
+                pageInputPlaceholder: "GO",
+                //接受用户输入内容的延迟时间。单位：毫秒
+                pageInputTimeout: 800,
+                //分页尺寸列表。
+                pageSizeList: [5, 10, 20, 50, 100, 200],
+                //当分页更改后引发此事件。
+                pageChanged: function (pageIndex, pageSize) {
+                    $http({
+                        method: 'get',
+                        url: '/getPageChangePArticle',
+                        params: {
+                            id: authorId,
+                            size: pageSize,
+                            page: pageIndex
+                        }
+                    }).success(function (articles) {
+                        $scope.authorLatestArticles=articles.content;
+                    })
+                }
+            });
+
+
+
+
+
+    }}]);
+    angular.element(document).ready(function () {
+        angular.bootstrap(document, ['authorApp']);
+    });
+/*]]>*/
+</script>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>文件上传</title>
+</head>
+<body>
+<h2>已有文件：</h2>
+
+<!--<img th:src="${file.name}" style="height:80px;"/>，文件名称：<span th:text="${file.name}"></span>-->
+
+<hr/>
+<form method="post" action="/author/updateHead" enctype="multipart/form-data">
+    头像：<input name="heading" type="file"/>
+    <br/>
+    <button type="submit">确定上传</button>
+</form>
+</body>
+</html>
