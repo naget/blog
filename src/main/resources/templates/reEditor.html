@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../../dist/css/wangEditor.min.css"/>
+    <title>博客系统—博客编辑</title>
+    <link rel="short icon" type="image/x-icon" href="../../img/logo.png"/>
+    <link href="../../css/public.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../css/edit.css"/>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+</head>
+<body>
+<div id="wraper">
+    <!-- S #header -->
+    <header id="header">
+
+        <div class="header-group">
+            <h1 id="group_name">编辑博客</h1>
+        </div>
+    </header>
+    <section id="container" class="clearfloat">
+        <div id="info">
+            <label id="except">文章标题：</label><input id="titleDiv" type="text" placeholder="请输入文章标题"/>
+            <label>关键字：</label><input id="keysDiv" type="text" placeholder="请输入关键字"/>
+            <label>文章分类：</label>
+            <select id="categoryId">
+                <option value="0">默认</option>
+                <option value="1">web前端</option>
+                <option value="4">web后端</option>
+                <option value="2">嵌入式</option>
+                <option value="3">安卓开发</option>
+            </select>
+        </div>
+
+        <textarea id="contentDiv" style="height: 500px;width: 100%"></textarea>
+        <button id="submit">提交</button>
+    </section>
+</div>
+</body>
+<script type="text/javascript" src="../../dist/js/lib/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../../dist/js/wangEditor.min.js"></script>
+<script  th:inline="javascript">
+    /*<![CDATA[*/
+    var content = [[${articleContent}]];
+    var title = [[${title}]];
+    var keys = [[${keys}]] ;
+    var categoryId= [[${categoryId}]];
+    var articleId=[[${articleId}]] ;
+    console.log(articleId);
+    /*]]>*/
+    var editor = new wangEditor('contentDiv');
+    editor.config.uploadImgUrl="/blogSystem/author/insertPicture";
+    editor.config.uploadImgFileName="myFileName";
+    editor.create();
+    editor.$txt.html(content);
+    $("#titleDiv").val(title);
+    $("#keysDiv").val(keys);
+    $("#categoryId").val(categoryId);
+    $('#submit').click(function () {
+//        var contentHtml = editor.$txt.html().trim();
+        var contentHtml = $('#contentDiv').val().trim().toString();
+        console.log(contentHtml);
+        var title = $("#titleDiv").val().toString();
+        var keys = $("#keysDiv").val().toString();
+        var categoryId = $("#categoryId").val().toString();
+        var url="/blogSystem/author/reSaveArticle";
+        var data={
+            "title":title,
+            "keys":keys,
+            "contentHtml":contentHtml,
+            "articleId":articleId,
+            "categoryId":categoryId
+
+        };
+        JSON.stringify(data);
+        $.ajax({
+            url:url,
+            type:'post',
+            contentType:'application/json',
+            data:data
+        }).success(function (data) {
+            alert(data);
+            window.location.href="/blogSystem/getPersonalInfo"
+        });
+    });
+
+</script>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="toTop" content="true"/>
+    <title>翼灵博客-翼灵物联工作室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="short icon" type="image/x-icon" href="img/logo.png"/>
+    <!--<script src="//cdn.bootcss.com/angular-ui-router/1.0.0-beta.3/angular-ui-router.min.js"></script>-->
+    <script src="//cdn.bootcss.com/angular.js/1.5.5/angular.js"></script>
+    <!--<script src="//cdn.bootcss.com/angular-ui-router/1.0.0-rc.1/angular-ui-router.js"></script>-->
+    <script type="text/javascript" charset="utf-8" src="js/jquery-1.11.0.min.js"></script>
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="js/bootstrap.min.js"></script>
+
+    <link type="text/css" href="css/bootstrap-pagination.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="js/bootstrap-pagination.min.js"></script>
+    <script type="text/javascript">
+
+        var app = angular.module("myApp", []);
+        var getUserHead = function (obj) {
+            alert("ddd");
+            console.log("进入函数");
+            obj.src = obj.name.toString() + "?" + Math.random();
+        };
+        var index0 = "";
+
+        //        app.config(['$stateProvider', function ($stateProvider,$urlRouterProvider) {
+        //            $stateProvider
+        //                .state('articles', {
+        ////                    url: '/',
+        //                    templateUrl: '/index-blog.html',
+        //                    controller: 'articlesCtrl'
+        //                })
+        //                .state('article', {
+        ////                    url: '/article/:articleId',
+        //                    templateUrl: '/article/:articleId',
+        //                    controller: 'articleCtrl'
+        //                })
+        //                .state('author',{
+        //                    params:{"authorId":null},
+        ////                    url:'/author',
+        //                    templateUrl:'/toAuthor',
+        //                    controller:'authorCtrl',
+        //                });
+        //        }]);
+        //        app.run(function ($rootScope, $state, $stateParams) {
+        //            $rootScope.$state = $state;
+        //            $rootScope.$stateParams = $stateParams;
+        //        });
+
+
+        app.controller('articlesCtrl', function ($scope, $http) {
+
+            $scope.fetchHottestArticleList = function () {
+                $http({
+                    method: 'get',
+                    url: '/blogSystem/getHottestArticles'
+                }).success(function (articles) {
+                    $scope.hottestArticles = articles.content;
+                })
+            };
+            $scope.EnterPress=function ($event) {
+                if ($event.keyCode===13){
+                    $scope.fetchArticleList();
+                }
+            };
+            $scope.fetchHottestUserList = function () {
+                $http({
+                    method: 'get',
+                    url: '/blogSystem/getHottestUsers'
+                }).success(function (hotUsers) {
+                    $scope.hotUsers = hotUsers.content;
+                })
+            };
+            $scope.fetchHottestUserList();
+            $scope.fetchHottestArticleList();
+//            $scope.toAuthor = function () {
+////                var id = articleId.id.value;
+//                $state.go('author', {authorId:6});
+//            };
+//            $scope.toArticle = function () {
+////                var id = articleId.id.value;
+//                $state.go('article', {articleId:6});
+//            };
+            $scope.fetchArticleList = function () {
+//                alert("fetchArticleList()");
+                var index = document.getElementById("index");
+                if (index != null) index0 = index.value;
+                $http({
+                    method: 'get',
+                    url: '/blogSystem/firstShow',
+                    params: {
+                        index: index0
+                    }
+
+                }).success(function (articles) {
+                    $scope.articles = articles.content;
+                    $scope.latestPage(articles);
+                })
+            };
+            $scope.fetchArticleList();
+
+//            $scope.clickArticle=function (id) {
+//                $http({
+//                    method:'get',
+//                    url:'clickArticle',
+//                    params:{articleId:id}
+//
+//                }).success(function () {
+//
+//                })
+//            };
+            $scope.latestPage = function (all) {
+//                alert("进入latestPage()");
+                var demo1 = BootstrapPagination($("#demo1"), {
+                    layoutScheme: "lefttext,pagesizelist,firstpage,prevgrouppage,prevpage,pagenumber,nextpage,nextgrouppage,lastpage,pageinput,righttext",
+                    //记录总数。
+                    total: all.totalElements,
+                    //分页尺寸。指示每页最多显示的记录数量。
+                    pageSize: all.size,
+                    //当前页索引编号。从其开始（从0开始）的整数。
+                    pageIndex: all.number,
+                    //指示分页导航栏中最多显示的页索引数量。
+                    pageGroupSize: 5,
+                    //位于导航条左侧的输出信息格式化字符串
+                    leftFormateString: "本页{count}条记录/共{total}条记录",
+                    //位于导航条右侧的输出信息格式化字符串
+                    rightFormateString: "第{pageNumber}页/共{totalPages}页",
+                    //页码文本格式化字符串。
+                    pageNumberFormateString: "{pageNumber}",
+                    //分页尺寸输出格式化字符串
+                    pageSizeListFormateString: "每页显示{pageSize}条记录",
+                    //上一页导航按钮文本。
+                    prevPageText: "上一页",
+                    //下一页导航按钮文本。
+                    nextPageText: "下一页",
+                    //上一组分页导航按钮文本。
+                    prevGroupPageText: "上一组",
+                    //下一组分页导航按钮文本。
+                    nextGroupPageText: "下一组",
+                    //首页导航按钮文本。
+                    firstPageText: "首页",
+                    //尾页导航按钮文本。
+                    lastPageText: "尾页",
+                    //设置页码输入框中显示的提示文本。
+                    pageInputPlaceholder: "GO",
+                    //接受用户输入内容的延迟时间。单位：毫秒
+                    pageInputTimeout: 800,
+                    //分页尺寸列表。
+                    pageSizeList: [2, 5, 10, 20, 50, 100, 200],
+                    //当分页更改后引发此事件。
+                    pageChanged: function (pageIndex, pageSize) {
+                        var index = document.getElementById("index");
+                        if (index != null) index0 = index.value;
+//                        alert(pageIndex + "进来了 " + index0);
+                        $http({
+                            method: 'get',
+                            url: '/blogSystem/firstShow',
+                            params: {
+                                index: index0,
+                                page: pageIndex,
+                                size: pageSize
+                            }
+                        }).success(function (articles) {
+                            $scope.articles = articles.content;
+                            $scope.latestPage(articles);
+                        })
+                    }
+                });
+
+
+            };
+        });
+
+
+    </script>
+    <link href="css/public.css" rel="stylesheet"/>
+    <link  href="css/index-blog.css" rel="stylesheet"/>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/toTop.js"></script>
+</head>
+<body ng-controller="articlesCtrl">
+<div id="wrapper">
+    <!-- S #header -->
+    <header id="header">
+        <h1>
+            <a href="/index" target="_self"><img src="img/logo.png" alt="logo" id="logo"/></a>
+            <span>翼灵博客 - WingBlogs</span>
+        </h1>
+    </header>
+    <!-- E #header -->
+    <section id="blog-nav">
+        <ul>
+            <li><img src="img/logo.png" alt="嵌入式"/><a href="/blogSystem/COE">嵌入式</a></li>
+            <li><img src="img/logo.png" alt="安卓"/><a href="/blogSystem/COA">安卓</a></li>
+            <li><img src="img/logo.png" alt="web后端"/><a href="/blogSystem/COB">web后端</a></li>
+            <li><img src="img/logo.png" alt="web前端"/><a href="/blogSystem/COF">web前端</a></li>
+            <li><img src="img/logo.png" alt="个人中心"/><a href="/blogSystem/getPersonalInfo">个人中心</a></li>
+            <li sec:authorize="isAuthenticated()">Welcome:<span id="span1" sec:authentication="name"></span></li>
+            <li sec:authorize="isAnonymous()"><a href="/blogSystem/login">登录</a></li>
+
+
+            <!--<li><a href="getAuthor/95">登录</a></li>-->
+        </ul>
+        <form action="" id="nav-form">
+            <a id="writeblogs" href="/blogSystem/editor"><img src="img/icon-edit.png"/>写博客</a>
+            <div id="searchbox">
+                <input id="index" type="text" ng-blur="fetchArticleList()" ng-keypress="EnterPress($event)" placeholder="搜索关键词"/>
+                <button disabled="disabled" ><img src="img/icon-search.png"/></button>
+            </div>
+        </form>
+    </section>
+    <section id="container">
+        <aside id="aside">
+            <!--<section id="blog-dir">
+                <h3>博客导航</h3>
+                <form action="">
+                    <button id="writeblogs"><img src="img/icon-edit.png"><a href="#">写博客</a></button>
+                    <div id="searchbox">
+                        <input type="text" placeholder="搜索关键词">
+                        <button><a href="#"><img src="img/icon-search.png"></a></button>
+                    </div>
+                </form>
+                <ul>
+                   &lt;!&ndash; <li><a href="#">最热</a></li>
+                    <li><a href="#">最新</a></li>&ndash;&gt;
+                    <li><img src="img/logo.png" alt="嵌入式"><a href="#">嵌入式</a></li>
+                    <li><img src="img/logo.png" alt="安卓"><a href="#">安卓</a></li>
+                    <li><img src="img/logo.png" alt="web后端"><a href="#">web后端</a></li>
+                    <li><img src="img/logo.png" alt="web前端"><a href="#">web前端</a></li>
+                </ul>
+            </section>-->
+            <h3>热门作者</h3>
+            <section id="blog-author" ng-repeat="hotUser in hotUsers">
+                <!--打成war包可以访问头像,缓存没解决-->
+                <figure>
+                    <a href="/blogSystem/getAuthor/{{hotUser.id}}"> <img name="{{hotUser.head}}" ng-src="{{hotUser.head}}?rand=jklsdk"
+                                                              alt="index-blog-author"/></a>
+                </figure>
+                <div>
+                    <p>{{hotUser.grade}}级 {{hotUser.names}}</p>
+                    <p>{{hotUser.groups}}</p>
+                    <p>作者简介：*****</p>
+                </div>
+
+            </section>
+            <section id="blog-top">
+                <h3>博客 TOP10</h3>
+                <figure>
+                    <img src="img/index-blog-top.jpg" alt="top1"/>
+                </figure>
+                <ul ng-repeat="hottestArticle in hottestArticles">
+                    <li><a href="/blogSystem/article/{{hottestArticle.id}}" id="top1"><span>{{$index+1}}</span>{{hottestArticle.title}}</a>
+                    </li>
+                    <!--<li><a href="#" id="top2"><span>2</span>面对人们对 AI 的质疑或支持，你或许可以做点什么</a></li>-->
+                    <!--<li><a href="#" id="top3"><span>3</span>李彦宏发2017年内部信：百度在新的一年要做什么、要去向何方？</a></li>-->
+                    <!--<li><a href="#" id="top4"><span>4</span>从小众到“刷屏”，赵雷也走通了民谣歌手蹿红之路</a></li>-->
+                    <!--<li><a href="#" id="top5"><span>5</span>在以色列创业公司工作是怎样一种体验？</a></li>-->
+                    <!--<li><a href="#" id="top6"><span>6</span>新三板年报季“乍泄”：多枝红杏出墙来</a></li>-->
+                    <!--<li><a href="#" id="top7"><span>7</span>新三板年报季“乍泄”：多枝红杏出墙来</a></li>-->
+                    <!--<li><a href="#" id="top8"><span>8</span>新三板年报季“乍泄”：多枝红杏出墙来</a></li>-->
+                    <!--<li><a href="#" id="top9"><span>9</span>新三板年报季“乍泄”：多枝红杏出墙来</a></li>-->
+                    <!--<li><a href="#" id="top10"><span>10</span>新三板年报季“乍泄”：多枝红杏出墙来</a></li>-->
+                </ul>
+            </section>
+            <section id="blog-intro">
+                <h3>博客简介</h3>
+                <figure>
+                    <img src="img/index-blog-intro.jpg" alt="blog-introduce"/>
+                </figure>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;翼灵博客网站（WingBlogs）于2017年*月*日上线，是一个富有活力的计算机科学技术学习网站，
+                    包含嵌入式、安卓、web后端、web前端四个方向的相关技术文章。<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;本网站由翼灵物联工作室（西南石油大学明理楼C1011）web前端与web后端合作开发、维护。网站所发布的文章包含工
+                    作室成员的学习经验、学习笔记、学习技巧
+                    等。我们希望WingBlogs不仅可以成为一个工作室内部成员之间的经验交流网站，更能助于计算机专业同学的学习。
+                </p>
+                <form>
+                    <button><a href="#" class="hvr-float-shadow">加入我们</a></button>
+                </form>
+            </section>
+            <section id="blog-link">
+                <h3>友情链接</h3>
+                <p>技术学习</p>
+                <ul>
+                    <li><img src="img/logo.png" alt="翼灵官网"/><a href="http://www.swpuiot.com">翼灵官网</a></li>
+                    <li><img src="img/icon-CSDN.png" alt="CSDN.NET"/><a href="http://www.csdn.net/">CSDN.NET</a></li>
+                    <li><img src="img/icon-github.png" alt="GitHub"/><a href="https://github.com/">GitHub</a></li>
+                    <li><img src="img/icon-oschina.png" alt="开源中国"/><a href="http://www.oschina.net/">开源中国</a></li>
+                    <li><img src="img/icon-cnblogs.png" alt="博客园"/><a href="http://www.cnblogs.com/">博客园</a></li>
+                    <li><img src="img/icon-codeceo.png" alt="码农网"/><a href="http://www.codeceo.com/">码农网</a></li>
+                    <li><img src="img/icon-awesomes.png" alt="Awesomes"/><a href="https://www.awesomes.cn/">Awesomes</a>
+                    </li>
+                </ul>
+                <p>科技资讯</p>
+                <ul>
+                    <li><img src="img/icon-36kr.png" alt="36氪"/><a href="http://36kr.com/">36氪</a></li>
+                    <li><img src="img/icon-guokr.png" alt="果壳网"/><a href="http://www.guokr.com/">果壳网</a></li>
+                    <li><img src="img/icon-freebuf.png" alt="黑客与极客"/><a href="http://www.freebuf.com/">黑客与极客</a></li>
+                </ul>
+            </section>
+            <!--123-->
+        </aside>
+        <main id="main">
+            <hr/>
+            <article ng-repeat="article in articles">
+                <h2><a href="/blogSystem/article/{{article.id}}">{{article.title}}</a></h2>
+                <p><span>{{article.pubtime|date:'fullDate'}}</span><a
+                        href="#">{{article.author}}</a><span>{{article.readNumber}}阅读</span></p>
+                <section>
+                    {{article.content}}
+                </section>
+            </article>
+
+            <nav class="text-center">
+                <ul id="demo1" class="pagination">
+
+                </ul>
+            </nav>
+        </main>
+    </section>
+    <!-- S #footer -->
+    <footer id="footer">
+        <address>
+            <p><span>版权所有</span>翼灵物联工作室</p>
+            <p>电话：18280435703</p>
+            <p>地址：西南石油大学（新都）·明理楼C1011</p>
+        </address>
+    </footer>
+    <!-- E #footer -->
+</div>
+</body>
+</html>

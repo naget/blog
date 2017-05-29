@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Coa">
+<head>
+    <meta charset="UTF-8"/>
+    <title>博客系统-Android开发</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="short icon" type="image/x-icon" href="img/logo.png"/>
+    <script type="text/javascript" charset="utf-8" src="js/jquery-1.11.0.min.js"></script>
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="js/bootstrap.min.js"></script>
+    <link type="text/css" href="css/bootstrap-pagination.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8" src="js/bootstrap-pagination.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.5.5/angular.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("Coa", []);
+        app.controller('CoaCtrl', function ($scope, $http) {
+            $scope.fetchCoaArticles = function () {
+                $http({
+                    method: 'get',
+                    url: '/blogSystem/getSpecialArticles',
+                    params: {id: 3}
+                }).success(function (articles) {
+                    $scope.articles = articles.content;
+                    $scope.coaPage(articles);
+                })
+            };
+            $scope.fetchCoaArticles();
+            $scope.coaPage = function (all) {
+                var demo2 = BootstrapPagination($("#demo2"), {
+                    layoutScheme: "lefttext,pagesizelist,firstpage,prevgrouppage,prevpage,pagenumber,nextpage,nextgrouppage,lastpage,pageinput,righttext",
+                    //记录总数。
+                    total: all.totalElements,
+                    //分页尺寸。指示每页最多显示的记录数量。
+                    pageSize: all.size,
+                    //当前页索引编号。从其开始（从0开始）的整数。
+                    pageIndex: all.number,
+                    //指示分页导航栏中最多显示的页索引数量。
+                    pageGroupSize: 5,
+                    //位于导航条左侧的输出信息格式化字符串
+                    leftFormateString: "本页{count}条记录/共{total}条记录",
+                    //位于导航条右侧的输出信息格式化字符串
+                    rightFormateString: "第{pageNumber}页/共{totalPages}页",
+                    //页码文本格式化字符串。
+                    pageNumberFormateString: "{pageNumber}",
+                    //分页尺寸输出格式化字符串
+                    pageSizeListFormateString: "每页显示{pageSize}条记录",
+                    //上一页导航按钮文本。
+                    prevPageText: "上一页",
+                    //下一页导航按钮文本。
+                    nextPageText: "下一页",
+                    //上一组分页导航按钮文本。
+                    prevGroupPageText: "上一组",
+                    //下一组分页导航按钮文本。
+                    nextGroupPageText: "下一组",
+                    //首页导航按钮文本。
+                    firstPageText: "首页",
+                    //尾页导航按钮文本。
+                    lastPageText: "尾页",
+                    //设置页码输入框中显示的提示文本。
+                    pageInputPlaceholder: "GO",
+                    //接受用户输入内容的延迟时间。单位：毫秒
+                    pageInputTimeout: 800,
+                    //分页尺寸列表。
+                    pageSizeList: [5, 10, 20, 50, 100, 200],
+                    //当分页更改后引发此事件。
+                    pageChanged: function (pageIndex, pageSize) {
+                        $http({
+                            method: 'get',
+                            url: '/blogSystem/getSpecialArticles',
+                            params: {
+                                id: 3,
+                                size: pageSize,
+                                page: pageIndex
+                            }
+                        }).success(function (articles) {
+                            $scope.articles = articles.content;
+                        })
+                    }
+                });
+            }
+        });
+    </script>
+    <link href="css/public.css" rel="stylesheet"/>
+    <link href="css/group-blog.css" rel="stylesheet"/>
+</head>
+<body ng-controller="CoaCtrl">
+    <div id="wrapper">
+        <!-- S #header -->
+        <header id="header">
+            <div class="header-logo">
+            	<img src="img/logo.png" alt="logo" id="logo"/>
+            <h2>Wing Blogs</h2>
+            </div>
+            <div class="header-group">
+            	<h1 id="group_name"> COA-Android开发</h1>
+            </div>
+        </header>
+        <!-- E #header -->
+        <section id="container">
+            <aside id="aside">
+        		<img src="img/COA.jpg" alt="COE"/>
+            	<h3>COA-Android开发</h3>
+                <span>
+					<h4> 方向资料</h4>
+					<p>作为翼灵物联工作室四大研究方向之一，拥有着举足轻重的地位。移动开发部负责智能手机App的设计、开发、维护，部门成立较早，拥有完整的教学体系，能够培养出能力拔萃的全方位人才。部门以Android应用开发为主线，以开源项目开发、外包项目开发以及上架App开发为目标，内部定期对成员进行培训。部门秉承“习惯解决问题，以解决问题为习惯”的宗旨，带领新成员走入多姿多彩的移动开发之路。 </p>
+					
+				</span>
+				<!--<span>-->
+					<!--<h4> 方向视角</h4>-->
+					<!--<ul type="circle">-->
+						<!--<li><a href="#" target="_blank">Java编程语言基础</a></li>-->
+						<!--<li><a href="#" target="_blank">App界面设计</a></li>-->
+						<!--<li><a href="#" target="_blank">数据库基础</a></li>-->
+						<!--<li><a href="#" target="_blank">开源库应用</a></li>-->
+						<!--<li><a href="#" target="_blank">设计模式</a></li>-->
+						<!--<li><a href="#" target="_blank">......</a></li>-->
+					<!--</ul>-->
+				<!--</span>-->
+				<!--<span>-->
+					<!--<h4> 更多文章</h4>-->
+					<!--<ul type="circle">-->
+						<!--<li><a href="#" target="_blank">工具方法</a></li>-->
+						<!--<li><a href="#" target="_blank">学习笔记</a></li>-->
+						<!--<li><a href="#" target="_blank">好文收集</a></li>-->
+					<!--</ul>-->
+				<!--</span>-->
+            </aside>
+            <main id="main">
+                <article ng-repeat="article in articles">
+                    <h2><a href="/blogSystem/article/{{article.id}}" target="_blank">{{article.title}}</a></h2>
+                    <p><span>{{article.pubtime|date:'fullDate'}}</span><span>{{article.author}}</span><span>阅读量{{article.readNumber}}</span>
+                    </p>
+                </article>
+
+               <!-- pages -->
+	        <form class="form-inline">
+                <nav class="text-center">
+                    <ul id="demo2" class="pagination">
+
+                    </ul>
+                </nav>
+	        </form>
+            </main>
+        </section>
+       
+        <!-- S #footer -->
+        <footer id="footer">
+            <address>
+                <p><span>版权所有</span>翼灵物联工作室</p>
+                <p>电话：18280435703</p>
+                <p>地址：西南石油大学（新都）·明理楼C1011</p>
+            </address>
+        </footer>
+        <!-- E #footer -->
+    </div>
+</body>
+</html>

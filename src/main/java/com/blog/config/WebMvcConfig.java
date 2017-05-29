@@ -6,9 +6,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
-
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
+
 
 		registry.addViewController("/index").setViewName("index-blog");
 		registry.addViewController("/COA").setViewName("COA");

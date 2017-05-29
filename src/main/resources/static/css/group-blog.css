@@ -1,0 +1,170 @@
+body{
+font-family: "微软雅黑";}
+/*header样式*/
+header .header-logo{
+	background-color:rgba(55,57,78,0.8); 
+	height: 40px;
+}
+header .header-logo img{
+	margin:0 0 0 10%;
+	width: 40px;
+	height: 40px;
+}
+header .header-logo h2{
+	display: inline-block;
+	vertical-align: top;
+	margin: 7px 0;
+	color: white;
+}
+header .header-group{
+	height: 220px;
+	width:100%;
+    background:url(../img/background.jpg);/*linear-gradient(to bottom,rgba(55,57,78,1),rgba(55,57,78,0.5));*/
+}
+header .header-group #group_name{
+	margin:auto 0;
+	line-height:130px;
+	height: 130px;
+	color: white;
+}
+header .header-logo span{
+	float: right;
+	margin:10px 10% 0 0;
+	padding: 0.3em 0.6em;
+	background: orangered;
+	border-radius: 5px;
+}
+header .header-logo span a{
+	color:white;
+	text-decoration: none;
+}
+header .header-group span button{
+	border: none;
+	background: none;
+	color: orangered;
+}
+section#container{
+	margin: -70px 10% 2% 10%;
+	clear: all;
+	overflow: hidden;
+	width: 80%;
+	height:auto;
+	background-color:white;
+	border: 1px solid #CCCCCC;
+	border-radius: 8px;
+}
+aside#aside{
+	width: 20%;
+	margin: 1%;
+	float: left;
+}
+aside#aside img{
+	width:100%;
+	height: 100%;
+	text-align: center;
+}
+aside#aside h3{
+	padding: 10px;
+	margin-bottom: 20px;
+	text-align: center;
+	font-weight: bold;	
+	color:#204D74;
+	border-radius: 5px;
+	}
+aside#aside span{
+	display: block;
+	margin:5% 0 5% 5%;
+	padding:0 0.5em 1em 0.5em;
+	border: 1px solid #CCCCCC;
+	border-radius: 8px;
+}
+aside#aside h4,p,li{
+	color: #434664;
+	line-height: 25px;
+	}
+aside#aside h4{
+	padding: 0 0.5em;
+	border-radius:0 50px ;
+	text-indent: 0.5em;
+	background-color:lightskyblue/*#C0C0C0*/;
+	color: white;
+}
+aside#aside p{
+		text-indent: 2em;
+		font-size: 15px;
+	}
+
+aside#aside h4
+	{
+		display: inline-block;
+		padding-left: 1px;
+		font-weight: bolder;
+	}
+aside#aside hr
+	{
+		background-color:#bfbfbf;
+		height: 1px;
+		padding: 0;
+		margin-top:0 ;
+		margin-bottom: 10px;
+	}
+main#main{
+	width: 77%;
+	margin: 1% 1% 1% 0;
+	float: right;
+}
+main#main article{
+	margin:2%;
+	padding:0 0.5em 1em 0.5em;
+	clear:all;
+	overflow: hidden;
+	border: 1px solid #CCCCCC;
+	border-radius: 8px;	
+}
+main#main article .order{
+	margin: 0 0 0 1em;
+	padding: 1em;
+	background: orangered;
+	color: white;
+	font-size: 2em;
+}
+main#main article p{
+	float: right;
+}
+main#main article p span{
+	margin: 0 0.8em;
+}
+@media only screen and (max-width: 768px) {
+    section#container {
+        flex-direction: column;
+    }
+    aside#aside {
+        width: 100%;
+        margin: 0;
+        float: none;
+    }
+	aside#aside span{
+		display: block;
+		margin:2%;
+}
+    aside#aside ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap ;
+        justify-content:space-around;
+        align-items:flex-start;
+    }
+    aside#aside ul li {
+        display: inline-block;
+        margin: 0 0.3em 0 0;
+    }
+    main#main{
+    	width: 100%;
+    	margin: 0;
+		float: none;
+    }
+    main#main article{
+		margin:2%;
+		padding:0.3em;
+}
+}
