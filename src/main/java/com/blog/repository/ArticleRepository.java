@@ -38,9 +38,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> ,JpaSpec
     @Transactional
     @Query("DELETE from Article a where a.id=?1")
     void deleteById(Long articleId);
-    @Query("update Article a set a.title=?1,a.content=?2,a.category=?3 where a.id=?4")
     @Modifying
     @Transactional
+    @Query("update Article a set a.title=?1,a.content=?2,a.category=?3 where a.id=?4")
     int updateArticleById(String title, String keys, Category category,Long id);
 
 //    Page<Article> findAll(Specification<Article> specification,Pageable pageable);
