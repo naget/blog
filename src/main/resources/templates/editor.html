@@ -44,7 +44,7 @@
 <script type="text/javascript">
 
     var editor = new wangEditor('contentDiv');
-    editor.config.uploadImgUrl="/author/insertPicture";
+    editor.config.uploadImgUrl="/blogSystem/author/insertPicture";
     editor.config.uploadImgFileName="myFileName";
     editor.create();
     $('#submit').click(function () {
@@ -54,7 +54,7 @@
         var title = $("#titleDiv").val().toString();
         var keys = $("#keysDiv").val().toString();
         var categoryId = $("#categoryId").val().toString();
-        var url="/author/postArticle";
+        var url="/blogSystem/author/postArticle";
         var data={
             "title":title,
             "keys":keys,
@@ -69,7 +69,7 @@
             data:data
         }).success(function (data) {
             alert(data);
-            window.location.href="/getPersonalInfo";
+            window.location.href="/blogSystem/getPersonalInfo";
         });
     });
 </script>

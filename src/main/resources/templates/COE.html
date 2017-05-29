@@ -18,7 +18,7 @@
                 $scope.fetchCoeArticles=function () {
                     $http({
                         method:'get',
-                        url:'/getSpecialArticles',
+                        url:'/blogSystem/getSpecialArticles',
                         params:{id:2}
                     }).success(function (articles) {
                         $scope.articles=articles.content;
@@ -67,7 +67,7 @@
                         pageChanged: function (pageIndex, pageSize) {
                             $http({
                                 method:'get',
-                                url:'/getSpecialArticles',
+                                url:'/blogSystem/getSpecialArticles',
                                 params:{
                                     id:2,
                                     size:pageSize,
@@ -131,7 +131,7 @@
             </aside>
             <main id="main">
               <article ng-repeat="article in articles">
-                <h2><a href="/article/{{article.id}}" target="_blank">{{article.title}}</a></h2>
+                <h2><a href="/blogSystem/article/{{article.id}}" target="_blank">{{article.title}}</a></h2>
                 <p><span>{{article.pubtime|date:'fullDate'}}</span><span>{{article.author}}</span><span>阅读量{{article.readNumber}}</span></p>
             </article>
 
