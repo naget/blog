@@ -57,7 +57,7 @@
             $scope.fetchHottestArticleList = function () {
                 $http({
                     method: 'get',
-                    url: '/blogSystem/getHottestArticles'
+                    url: '/getHottestArticles'
                 }).success(function (articles) {
                     $scope.hottestArticles = articles.content;
                 })
@@ -70,7 +70,7 @@
             $scope.fetchHottestUserList = function () {
                 $http({
                     method: 'get',
-                    url: '/blogSystem/getHottestUsers'
+                    url: '/getHottestUsers'
                 }).success(function (hotUsers) {
                     $scope.hotUsers = hotUsers.content;
                 })
@@ -91,7 +91,7 @@
                 if (index != null) index0 = index.value;
                 $http({
                     method: 'get',
-                    url: '/blogSystem/firstShow',
+                    url: '/firstShow',
                     params: {
                         index: index0
                     }
@@ -158,7 +158,7 @@
 //                        alert(pageIndex + "进来了 " + index0);
                         $http({
                             method: 'get',
-                            url: '/blogSystem/firstShow',
+                            url: '/firstShow',
                             params: {
                                 index: index0,
                                 page: pageIndex,
@@ -194,19 +194,19 @@
     <!-- E #header -->
     <section id="blog-nav">
         <ul>
-            <li><img src="img/logo.png" alt="嵌入式"/><a href="/blogSystem/COE">嵌入式</a></li>
-            <li><img src="img/logo.png" alt="安卓"/><a href="/blogSystem/COA">安卓</a></li>
-            <li><img src="img/logo.png" alt="web后端"/><a href="/blogSystem/COB">web后端</a></li>
-            <li><img src="img/logo.png" alt="web前端"/><a href="/blogSystem/COF">web前端</a></li>
-            <li><img src="img/logo.png" alt="个人中心"/><a href="/blogSystem/getPersonalInfo">个人中心</a></li>
+            <li><img src="img/logo.png" alt="嵌入式"/><a href="/COE">嵌入式</a></li>
+            <li><img src="img/logo.png" alt="安卓"/><a href="/COA">安卓</a></li>
+            <li><img src="img/logo.png" alt="web后端"/><a href="/COB">web后端</a></li>
+            <li><img src="img/logo.png" alt="web前端"/><a href="/COF">web前端</a></li>
+            <li><img src="img/logo.png" alt="个人中心"/><a href="/getPersonalInfo">个人中心</a></li>
             <li sec:authorize="isAuthenticated()">Welcome:<span id="span1" sec:authentication="name"></span></li>
-            <li sec:authorize="isAnonymous()"><a href="/blogSystem/login">登录</a></li>
+            <li sec:authorize="isAnonymous()"><a href="/login">登录</a></li>
 
 
             <!--<li><a href="getAuthor/95">登录</a></li>-->
         </ul>
         <form action="" id="nav-form">
-            <a id="writeblogs" href="/blogSystem/editor"><img src="img/icon-edit.png"/>写博客</a>
+            <a id="writeblogs" href="/editor"><img src="img/icon-edit.png"/>写博客</a>
             <div id="searchbox">
                 <input id="index" type="text" ng-blur="fetchArticleList()" ng-keypress="EnterPress($event)" placeholder="搜索关键词"/>
                 <button disabled="disabled" ><img src="img/icon-search.png"/></button>
@@ -226,7 +226,7 @@
                 </form>
                 <ul>
                    &lt;!&ndash; <li><a href="#">最热</a></li>
-                    <li><a href="#">最新</a></li>&ndash;&gt;
+                    <li><a href="#">最新</a></li>&ndash;&gt;review_number
                     <li><img src="img/logo.png" alt="嵌入式"><a href="#">嵌入式</a></li>
                     <li><img src="img/logo.png" alt="安卓"><a href="#">安卓</a></li>
                     <li><img src="img/logo.png" alt="web后端"><a href="#">web后端</a></li>
@@ -237,7 +237,7 @@
             <section id="blog-author" ng-repeat="hotUser in hotUsers">
                 <!--打成war包可以访问头像,缓存没解决-->
                 <figure>
-                    <a href="/blogSystem/getAuthor/{{hotUser.id}}"> <img name="{{hotUser.head}}" ng-src="{{hotUser.head}}?rand=jklsdk"
+                    <a href="/getAuthor/{{hotUser.id}}"> <img name="{{hotUser.head}}" ng-src="{{hotUser.head}}?rand=jklsdk"
                                                               alt="index-blog-author"/></a>
                 </figure>
                 <div>
@@ -253,7 +253,7 @@
                     <img src="img/index-blog-top.jpg" alt="top1"/>
                 </figure>
                 <ul ng-repeat="hottestArticle in hottestArticles">
-                    <li><a href="/blogSystem/article/{{hottestArticle.id}}" id="top1"><span>{{$index+1}}</span>{{hottestArticle.title}}</a>
+                    <li><a href="/article/{{hottestArticle.id}}" id="top1"><span>{{$index+1}}</span>{{hottestArticle.title}}</a>
                     </li>
                     <!--<li><a href="#" id="top2"><span>2</span>面对人们对 AI 的质疑或支持，你或许可以做点什么</a></li>-->
                     <!--<li><a href="#" id="top3"><span>3</span>李彦宏发2017年内部信：百度在新的一年要做什么、要去向何方？</a></li>-->
@@ -307,7 +307,7 @@
         <main id="main">
             <hr/>
             <article ng-repeat="article in articles">
-                <h2><a href="/blogSystem/article/{{article.id}}">{{article.title}}</a></h2>
+                <h2><a href="/article/{{article.id}}">{{article.title}}</a></h2>
                 <p><span>{{article.pubtime|date:'fullDate'}}</span><a
                         href="#">{{article.author}}</a><span>{{article.readNumber}}阅读</span></p>
                 <section>

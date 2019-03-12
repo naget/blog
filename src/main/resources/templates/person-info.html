@@ -25,9 +25,9 @@
             <img src="img/logo.png" alt="logo" id="logo"/>
             <h3>个人中心</h3>
             <ul>
-                <li><a href="/blogSystem/index" target="_blank">首页</a></li>
-                <li><a href="/blogSystem/logout" target="_self">退出</a></li>
-                <li><a href="/blogSystem/editor" target="_self">写博客</a></li>
+                <li><a href="/index" target="_blank">首页</a></li>
+                <li><a href="/logout" target="_self">退出</a></li>
+                <li><a href="/editor" target="_self">写博客</a></li>
 
             </ul>
         </div>
@@ -39,7 +39,7 @@
                 <div id="sculpture-box">
                     <img ng-src="{{myInfo.head}}" alt="sculpture" id="sculpture" name="{{myInfo.head}}"/>
                     <label for="file">更换头像</label>
-                    <form method="post" action="/blogSystem/author/updateHead" enctype="multipart/form-data" id="myForm">
+                    <form method="post" action="/author/updateHead" enctype="multipart/form-data" id="myForm">
                     <input type="file" id="file" name="heading" style="display: none" />
                     </form>
                 </div>
@@ -55,14 +55,14 @@
     <!-- E #header -->
     <section id="container">        <main id="main">
         <article ng-repeat="article in articles">
-            <h2><a href="/blogSystem/article/{{article.id}}" >{{article.title}}</a></h2>
+            <h2><a href="/article/{{article.id}}" >{{article.title}}</a></h2>
             <p><span>{{article.pubtime|date:'fullDate'}}</span><a
                     href="#">{{article.author}}</a><span>{{article.readNumber}}阅读</span></p>
             <section>
               关键词：  {{article.content}}
             </section>
             <p class="operation">
-               <a href="/blogSystem/author/reEditor/{{article.id}}"><button>编辑</button></a>
+               <a href="/author/reEditor/{{article.id}}"><button>编辑</button></a>
             </p>
         </article>
         <nav class="text-center">
@@ -79,7 +79,7 @@
             <section id="trends" >
                 <ul>
                     <li ng-repeat="notification in notifications">
-                        <a href="/blogSystem/article/{{notification.articleId}}" target="_blank">{{notification.actioner}}{{notification.actionName}}了你</a>
+                        <a href="/article/{{notification.articleId}}" target="_blank">{{notification.actioner}}{{notification.actionName}}了你</a>
                     </li>
                 </ul>
             </section>
@@ -125,7 +125,7 @@
         $scope.getAuthorDetail = function () {
             $http({
                 method: 'get',
-                url: '/blogSystem/getAuthorDetail',
+                url: '/getAuthorDetail',
                 params: {authorId: authorId}
             }).success(function (author) {
                 $scope.myInfo = author;
@@ -176,7 +176,7 @@
                 pageChanged: function (pageIndex, pageSize) {
                     $http({
                         method: 'get',
-                        url: '/blogSystem/getPageChangePArticle',
+                        url: '/getPageChangePArticle',
                         params: {
                             id: authorId,
                             size: pageSize,
@@ -191,7 +191,7 @@
         $scope.getNotification=function () {
             $http({
                 method:"get",
-                url:"/blogSystem/author/getNotification"
+                url:"/author/getNotification"
             }).success(function (notifications) {
                 $scope.notifications=notifications.content;
             });

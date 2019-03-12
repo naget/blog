@@ -11,6 +11,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
  */
 @SpringBootApplication
 @EnableAutoConfiguration
+//@EnableCaching
 public class Application extends SpringBootServletInitializer{
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder){

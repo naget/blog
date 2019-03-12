@@ -7,6 +7,7 @@ import com.blog.repository.ReviewRepository;
 import com.blog.repository.UserRepository;
 import com.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,15 +33,15 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     UserServiceImpl userService;
     @Override
-    public Page<Article> getLatestArticles(Pageable pageable) {
 
+    public Page<Article> getLatestArticles(Pageable pageable) {
 
         return articleRepository.findAll(pageable);
     }
 
     @Override
     public Page<Article> getSpecialArticles(Long category_id, Pageable pageable) {
-
+        System.out.println("-----category_id="+category_id+"---------------");
         return articleRepository.findByCategoryId(category_id, pageable);
     }
 

@@ -76,7 +76,7 @@ public class AuthorServiceImpl {
                     FileUtils.copyInputStreamToFile(file.getInputStream(),outFile);
                     User user=userRepository.findById(userId);
                     if (user!=null){
-                        user.setHead("http://119.29.20.191:8080"+pathname);
+                        user.setHead("http://blog.swpuiot.com"+pathname);
                         userRepository.save(user);
                     }else return new Tdata<>(0,"用户为空");
                 }
@@ -109,7 +109,7 @@ public class AuthorServiceImpl {
                     String pathname="/articlePicture/"+userId+"/"+Math.random()*1000000000+getFileType(fileName);
                     File outFile = new File(savePathHead+pathname);
                     FileUtils.copyInputStreamToFile(file.getInputStream(),outFile);
-                    return "http://119.29.20.191:8080"+pathname;
+                    return "http://blog.swpuiot.com"+pathname;
                 }
             } catch (IOException e) {
                 e.printStackTrace();

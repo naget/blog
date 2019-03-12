@@ -21,24 +21,24 @@
 <div id="wrapper">
     <header id="header">
         <div>
-        <p><a href="/blogSystem/index">返回首页</a></p>
+        <p><a href="/index">返回首页</a></p>
     </div>
     </header>
     <main id="main">
         <section id="article-list">
             <ul>
                 <li>热门标签</li>
-                <li><a href="/blogSystem/COE" target="_blank">嵌入式</a></li>
-                <li><a href="/blogSystem/COA" target="_blank">安卓</a></li>
-                <li><a href="/blogSystem/COB" target="_blank">web后端</a></li>
-                <li><a href="/blogSystem/COF" target="_blank">web前端</a></li>
+                <li><a href="/COE" target="_blank">嵌入式</a></li>
+                <li><a href="/COA" target="_blank">安卓</a></li>
+                <li><a href="/COB" target="_blank">web后端</a></li>
+                <li><a href="/COF" target="_blank">web前端</a></li>
             </ul>
             <section class="article-item" ng-repeat="authorLatestArticle in authorLatestArticles">
                 <!--<figure>这里加图片以后完成-->
                     <!--<a href="#" target="_blank"><img src="../img/blog-article-item.jpg" alt="blog-pic"/></a>-->
                 <!--</figure>-->
                 <section>
-                    <h2><a href="/blogSystem/article/{{authorLatestArticle.id}}" target="_blank">{{authorLatestArticle.title}}</a></h2>
+                    <h2><a href="/article/{{authorLatestArticle.id}}" target="_blank">{{authorLatestArticle.title}}</a></h2>
                     <div><span>{{authorLatestArticle.author}}</span><span>{{authorLatestArticle.pubtime|date:'fullDate'}}</span><span>{{authorLatestArticle.readNumber}}阅读</span></div>
                     <p>
                         {{authorLatestArticle.content}}
@@ -78,7 +78,7 @@
                     <img src="../img/index-blog-top.jpg" alt="top1"/>
                 </figure>
                 <ul ng-repeat="hottestArticle in hottestArticles">
-                    <li><a href="/blogSystem/article/{{hottestArticle.id}}" id="top1"><span>{{$index+1}}</span>{{hottestArticle.title}}</a></li>
+                    <li><a href="/article/{{hottestArticle.id}}" id="top1"><span>{{$index+1}}</span>{{hottestArticle.title}}</a></li>
 
                 </ul>
             </section>
@@ -86,7 +86,7 @@
             <section id="blog-link">
                 <h3>友情链接</h3>
                 <ul>
-                    <li><a href="/blogSystem/index" target="_blank">翼灵博客</a></li>
+                    <li><a href="/index" target="_blank">翼灵博客</a></li>
                     <li><a href="http://www.swpuiot.com/" target="_blank">翼灵官网</a></li>
                     <li><a href="http://www.csdn.net/" target="_blank">CSDN</a></li>
                     <li><a href="https://github.com/" target="_blank">GitHub</a></li>
@@ -118,7 +118,7 @@
         $scope.getAuthorDetail = function () {
             $http({
                 method: 'get',
-                url: '/blogSystem/getAuthorDetail',
+                url: '/getAuthorDetail',
                 params: {authorId: authorId}
             }).success(function (author) {
                 $scope.author = author;
@@ -130,7 +130,7 @@
         $scope.fetchHottestArticleList=function () {
             $http({
                 method: 'get',
-                url: '/blogSystem/getHottestArticles'
+                url: '/getHottestArticles'
             }).success(function (articles) {
                 $scope.hottestArticles = articles.content;
             })
@@ -177,7 +177,7 @@
                 pageChanged: function (pageIndex, pageSize) {
                     $http({
                         method: 'get',
-                        url: '/blogSystem/getPageChangePArticle',
+                        url: '/getPageChangePArticle',
                         params: {
                             id: authorId,
                             size: pageSize,

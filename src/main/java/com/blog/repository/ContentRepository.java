@@ -1,6 +1,7 @@
 package com.blog.repository;
 
 import com.blog.model.ArticleContent;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Repository
 public interface ContentRepository extends JpaRepository<ArticleContent,Long> {
+    @Cacheable(value = "thisredis",keyGenerator = "firstParamKeyGenerator")
     ArticleContent findById(Long id);
     @Query("SELECT c from ArticleContent c  order by c.id desc")
     List<ArticleContent> findMaxId();
